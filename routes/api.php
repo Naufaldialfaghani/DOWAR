@@ -6,7 +6,8 @@ use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\BeneficiaryController;
 use App\Http\Controllers\DonationController;
-use App\Http\Controllers\DistributionController; // 1. Import Controller Distribusi Kamu
+use App\Http\Controllers\DistributionController;
+use App\Http\Controllers\FeedbackController; // 1. Import Controller Distribusi Kamu
 
 // Endpoint Modul Fondasi (Auth)
 Route::prefix('auth')->group(function () {
@@ -29,6 +30,10 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
 // Endpoint Modul Penerima Manfaat (Beneficiaries)
 Route::get('/beneficiaries', [BeneficiaryController::class, 'index']);
 Route::post('/beneficiaries', [BeneficiaryController::class, 'store']);
+
+// Endpoint Modul Feedback
+Route::get('/feedbacks', [FeedbackController::class, 'index']);
+Route::post('/feedbacks', [FeedbackController::class, 'store']);
 
 // Grup Middleware untuk user yang sudah login
 Route::middleware('auth:api')->group(function () {
