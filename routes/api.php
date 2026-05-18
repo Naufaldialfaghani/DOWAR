@@ -12,6 +12,9 @@ Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
+    Route::post('/login', [AuthController::class, 'login']);
+});
+
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::post('/categories', [CategoryController::class, 'store']);
 
@@ -32,4 +35,5 @@ Route::middleware('auth:api')->group(function () {
     // Endpoint Modul Transaksi Donasi
     Route::get('/donations', [DonationController::class, 'index']);
     Route::post('/donations', [DonationController::class, 'store']);
+});
 });
