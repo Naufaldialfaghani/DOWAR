@@ -13,13 +13,10 @@ return new class extends Migration
 {
     Schema::create('distributions', function (Blueprint $table) {
         $table->id();
-        
+        $table->foreignId('donation_id')->constrained('donations')->onDelete('cascade');
         $table->foreignId('beneficiary_id')->constrained('beneficiaries')->onDelete('cascade');
-        $table->string('item_name'); 
-        $table->integer('quantity'); 
-        $table->string('unit'); 
-        $table->date('distributed_at'); 
-        $table->text('notes')->nullable(); 
+        $table->date('distribution_date');
+        $table->text('note')->nullable();
         $table->timestamps();
     });
 }

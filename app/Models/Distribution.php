@@ -10,16 +10,19 @@ class Distribution extends Model
     use HasFactory;
 
     protected $fillable = [
+        'donation_id',
         'beneficiary_id',
-        'item_name',
-        'quantity',
-        'unit',
-        'distributed_at',
-        'notes'
+        'distribution_date',
+        'note'
     ];
 
     public function beneficiary()
     {
         return $this->belongsTo(Beneficiary::class);
+    }
+
+    public function donation()
+    {
+        return $this->belongsTo(Donation::class);
     }
 }
