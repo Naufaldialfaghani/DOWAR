@@ -27,3 +27,4 @@ Route::middleware(['auth:api', 'role:admin'])->group(function () {
 // Endpoint Modul Penerima Manfaat (Beneficiaries)
 Route::get('/beneficiaries', [BeneficiaryController::class, 'index']);
 Route::post('/beneficiaries', [BeneficiaryController::class, 'store']);
+});
