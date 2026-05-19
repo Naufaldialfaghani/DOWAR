@@ -1,0 +1,671 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "DOWAR API",
+        "description": "API Donasi & Feedback System",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Local Server"
+        },
+        {
+            "url": "http://localhost:8000/api",
+            "description": "Local Server"
+        }
+    ],
+    "paths": {
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Register akun baru",
+                "operationId": "d764dd091cc4494ae0baf360b03319f3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Naufaldi Admin"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "naufaldi@dowar.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "example": "admin"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Register Sukses"
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Login dan dapatkan Token JWT",
+                "operationId": "8dcb70df1020986038d098cc08d05dae",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "naufaldi@dowar.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login Sukses"
+                    },
+                    "401": {
+                        "description": "Kredensial Salah"
+                    }
+                }
+            }
+        },
+        "/api/beneficiaries": {
+            "get": {
+                "tags": [
+                    "Beneficiaries"
+                ],
+                "summary": "Tampilkan semua penerima manfaat",
+                "operationId": "0c3c61f1ece70ef76bb1a8ee7a8e7223",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Beneficiaries"
+                ],
+                "summary": "Tambah penerima manfaat baru",
+                "operationId": "957c4f28a4f5dfbae60159df0ad2ac2c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "address",
+                                    "phone"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Panti Asuhan Harapan Bangsa"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Jl. Merdeka No. 10, Malang"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "08123456789"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Berhasil ditambahkan"
+                    },
+                    "422": {
+                        "description": "Validasi gagal"
+                    }
+                }
+            }
+        },
+        "/api/beneficiaries/{id}": {
+            "put": {
+                "tags": [
+                    "Beneficiaries"
+                ],
+                "summary": "Update data penerima manfaat",
+                "operationId": "260cac28769eec986bc7fed679adfc2f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Panti Asuhan Baru"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Jl. Baru No. 5, Malang"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "08987654321"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Berhasil diupdate"
+                    },
+                    "404": {
+                        "description": "Data tidak ditemukan"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Beneficiaries"
+                ],
+                "summary": "Hapus penerima manfaat",
+                "operationId": "566d4c0e504b36904d69f8b1b9d9ca35",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Data tidak ditemukan"
+                    }
+                }
+            }
+        },
+        "/api/campaigns": {
+            "get": {
+                "tags": [
+                    "Campaigns"
+                ],
+                "summary": "Lihat semua program donasi (Publik)",
+                "operationId": "f63bfb37edf1acfd021c50961b734ec0",
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mengambil data"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Campaigns"
+                ],
+                "summary": "Buat program donasi baru (Hanya Admin)",
+                "operationId": "272d9b28b56c8e18d5ef4c7440a05def",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Bantuan Pakaian Malang"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Donasi pakaian layak pakai."
+                                    },
+                                    "target_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2026-07-25"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "active"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Campaign Dibuat"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/campaigns/{id}": {
+            "get": {
+                "tags": [
+                    "Campaigns"
+                ],
+                "summary": "Detail program donasi spesifik",
+                "operationId": "0f74cc63090e3f9d520d77776391f420",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data ditemukan"
+                    },
+                    "404": {
+                        "description": "Data tidak ditemukan"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Campaigns"
+                ],
+                "summary": "Update program donasi (Hanya Admin)",
+                "operationId": "3e659e761ad8967d64e5beab16070c9b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Bantuan Pakaian Malang V2"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Update deskripsi."
+                                    },
+                                    "target_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2026-08-01"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "active"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Berhasil diupdate"
+                    },
+                    "404": {
+                        "description": "Data tidak ditemukan"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Campaigns"
+                ],
+                "summary": "Hapus program donasi (Hanya Admin)",
+                "operationId": "c640e140d1bee392e2477ab304b63927",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Data tidak ditemukan"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Lihat semua kategori donasi",
+                "operationId": "3f5817a34833d0a1f4af4548dd3aeaba",
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mengambil data kategori"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Buat kategori baru",
+                "operationId": "71fcad552bb0eaba9fb191fd8d8dcab0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Bencana Alam"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Kategori untuk korban bencana."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Kategori Dibuat"
+                    }
+                }
+            }
+        },
+        "/api/distributions": {
+            "get": {
+                "tags": [
+                    "Distributions"
+                ],
+                "summary": "Lihat riwayat penyaluran barang",
+                "operationId": "1c50a7e7560b6a28a8dc55c38f7ed1c1",
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mengambil riwayat distribusi"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Distributions"
+                ],
+                "summary": "Catat pengiriman barang donasi baru",
+                "operationId": "cf0677ca3a834ee6995836e6cc7118b4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "campaign_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "beneficiary_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "Terkirim"
+                                    },
+                                    "delivery_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2026-05-20"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Distribusi Berhasil Dicatat"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/donations": {
+            "get": {
+                "tags": [
+                    "Donations"
+                ],
+                "summary": "Lihat riwayat transaksi donasi",
+                "operationId": "efd463fc838a5d0b3edcc89ecc8374ac",
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mengambil data donasi"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Donations"
+                ],
+                "summary": "Buat transaksi donasi baru",
+                "operationId": "a83d56537f533c01a1daf0abefdec913",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "campaign_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "amount": {
+                                        "type": "integer",
+                                        "example": 50000
+                                    },
+                                    "payment_method": {
+                                        "type": "string",
+                                        "example": "QRIS"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Donasi Berhasil Diproses"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/feedbacks": {
+            "get": {
+                "tags": [
+                    "Feedbacks"
+                ],
+                "operationId": "2a36c585876dbe2b107ee1eca25452d4",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Feedbacks"
+                ],
+                "operationId": "1a1a79efc6cbe218c6741ed01413fdda",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "message"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "rating": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
+            "name": "Beneficiaries",
+            "description": "Beneficiaries"
+        },
+        {
+            "name": "Campaigns",
+            "description": "Campaigns"
+        },
+        {
+            "name": "Categories",
+            "description": "Categories"
+        },
+        {
+            "name": "Distributions",
+            "description": "Distributions"
+        },
+        {
+            "name": "Donations",
+            "description": "Donations"
+        },
+        {
+            "name": "Feedbacks",
+            "description": "Feedbacks"
+        }
+    ]
+}

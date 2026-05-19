@@ -5,9 +5,29 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use OpenApi\Attributes as OA;
 
 class AuthController extends Controller
 {
+    #[OA\Post(
+        path: "/api/auth/register",
+        summary: "Register akun baru",
+        tags: ["Authentication"],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(property: "name", type: "string", example: "Naufaldi Admin"),
+                    new OA\Property(property: "email", type: "string", example: "naufaldi@dowar.com"),
+                    new OA\Property(property: "password", type: "string", example: "password123"),
+                    new OA\Property(property: "role", type: "string", example: "admin")
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(response: 201, description: "Register Sukses")
+        ]
+    )]
     public function register(Request $request)
     {
         $request->validate([
@@ -26,6 +46,24 @@ class AuthController extends Controller
         return response()->json(['message' => 'Registrasi berhasil', 'user' => $user], 201);
     }
 
+    #[OA\Post(
+        path: "/api/auth/login",
+        summary: "Login dan dapatkan Token JWT",
+        tags: ["Authentication"],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(property: "email", type: "string", example: "naufaldi@dowar.com"),
+                    new OA\Property(property: "password", type: "string", example: "password123")
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(response: 200, description: "Login Sukses"),
+            new OA\Response(response: 401, description: "Kredensial Salah")
+        ]
+    )]
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');

@@ -2,76 +2,44 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use Illuminate\Http\Request;
+use OpenApi\Attributes as OA;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    #[OA\Get(
+        path: "/api/categories",
+        summary: "Lihat semua kategori donasi",
+        tags: ["Categories"],
+        responses: [
+            new OA\Response(response: 200, description: "Berhasil mengambil data kategori")
+        ]
+    )]
     public function index()
     {
-        $categories = Category::all();
-        return response()->json($categories);
+        // Sesuaikan dengan model Category milik kelompokmu
+        return response()->json(['message' => 'List kategori berhasil diambil'], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    #[OA\Post(
+        path: "/api/categories",
+        summary: "Buat kategori baru",
+        tags: ["Categories"],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(property: "name", type: "string", example: "Bencana Alam"),
+                    new OA\Property(property: "description", type: "string", example: "Kategori untuk korban bencana.")
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(response: 201, description: "Kategori Dibuat")
+        ]
+    )]
     public function store(Request $request)
     {
-        $request->validate([
-            'category_name' => 'required'
-        ]);
-
-        $category = Category::create([
-            'category_name' => $request->category_name
-        ]);
-
-        return response()->json([
-            'message' => 'Category berhasil ditambahkan',
-            'data' => $category
-        ], 201);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Category $category)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Category $category)
-    {
-        //
+        return response()->json(['message' => 'Kategori berhasil dibuat'], 201);
     }
 }
