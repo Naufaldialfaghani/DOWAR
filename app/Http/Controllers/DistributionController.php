@@ -5,12 +5,30 @@ namespace App\Http\Controllers;
 use App\Models\Distribution;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use OpenApi\Attributes as OA;
+
+#[OA\Tag(name: "Distributions")]
 
 class DistributionController extends Controller
 {
     /**
      * GET /api/distributions
      */
+    #[OA\Get(
+        path: "/api/distributions",
+        tags: ["Distributions"],
+        summary: "Ambil semua data distribusi",
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Riwayat distribusi berhasil diambil"
+            ),
+            new OA\Response(
+                response: 500,
+                description: "Terjadi kesalahan server"
+            )
+        ]
+    )]
     public function index()
     {
         try {
@@ -35,6 +53,37 @@ class DistributionController extends Controller
     /**
      * POST /api/distributions
      */
+    #[OA\Post(
+        path: "/api/distributions",
+        tags: ["Distributions"],
+        summary: "Mencatat log distribusi barang",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ["donation_id", "beneficiary_id", "distribution_date"],
+                properties: [
+                    new OA\Property(property: "donation_id", type: "integer", example: 1),
+                    new OA\Property(property: "beneficiary_id", type: "integer", example: 2),
+                    new OA\Property(property: "distribution_date", type: "string", format: "date", example: "2026-05-19"),
+                    new OA\Property(property: "note", type: "string", example: "Barang sudah diterima dengan baik")
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 201,
+                description: "Distribusi berhasil dicatat"
+            ),
+            new OA\Response(
+                response: 422,
+                description: "Validasi gagal"
+            ),
+            new OA\Response(
+                response: 500,
+                description: "Server error"
+            )
+        ]
+    )]
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [

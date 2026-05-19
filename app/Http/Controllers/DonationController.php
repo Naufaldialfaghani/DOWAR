@@ -6,9 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Models\Donation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use OpenApi\Attributes as OA;
+
+#[OA\Tag(name: "Donations")]
 
 class DonationController extends Controller
 {
+    #[OA\Get(
+        path: "/api/donations",
+        tags: ["Donations"],
+        summary: "Ambil riwayat semua donasi",
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Berhasil mengambil data donasi"
+            )
+        ]
+    )]
     public function index()
     {
         $donations = Donation::with(['user:id,name,email', 'campaign:id,title', 'category:id,category_name'])
@@ -22,6 +36,37 @@ class DonationController extends Controller
         ], 200);
     }
 
+    #[OA\Post(
+        path: "/api/donations",
+        tags: ["Donations"],
+        summary: "Membuat data donasi baru",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ["campaign_id", "category_id", "item_name", "quantity"],
+                properties: [
+                    new OA\Property(property: "campaign_id", type: "integer", example: 1),
+                    new OA\Property(property: "category_id", type: "integer", example: 2),
+                    new OA\Property(property: "item_name", type: "string", example: "Beras 5kg"),
+                    new OA\Property(property: "quantity", type: "integer", example: 3)
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 201,
+                description: "Donasi berhasil dicatat"
+            ),
+            new OA\Response(
+                response: 422,
+                description: "Validasi gagal"
+            ),
+            new OA\Response(
+                response: 401,
+                description: "Unauthorized (butuh login)"
+            )
+        ]
+    )]
     public function store(Request $request)
     {
         $request->validate([
@@ -37,7 +82,7 @@ class DonationController extends Controller
             'category_id' => $request->category_id,
             'item_name'   => $request->item_name,
             'quantity'    => $request->quantity,
-            'status'      => 'pending' // Default status
+            'status'      => 'pending'
         ]);
 
         return response()->json([

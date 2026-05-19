@@ -12,6 +12,405 @@
         }
     ],
     "paths": {
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register user baru",
+                "operationId": "d764dd091cc4494ae0baf360b03319f3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Zanita"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "zanita@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "123456"
+                                    },
+                                    "role": {
+                                        "type": "string",
+                                        "example": "donatur"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Registrasi berhasil"
+                    },
+                    "422": {
+                        "description": "Validasi gagal"
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login user dan dapatkan JWT token",
+                "operationId": "8dcb70df1020986038d098cc08d05dae",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "user@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "123456"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login berhasil, return token JWT"
+                    },
+                    "401": {
+                        "description": "Email atau password salah"
+                    }
+                }
+            }
+        },
+        "/api/beneficiaries": {
+            "get": {
+                "tags": [
+                    "Beneficiaries"
+                ],
+                "summary": "Ambil semua data penerima manfaat",
+                "operationId": "0c3c61f1ece70ef76bb1a8ee7a8e7223",
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil diambil"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Beneficiaries"
+                ],
+                "summary": "Tambah penerima manfaat baru",
+                "operationId": "957c4f28a4f5dfbae60159df0ad2ac2c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "address",
+                                    "phone"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Panti Asuhan Harapan"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Jl. Mawar No. 10"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "08123456789"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Berhasil ditambahkan"
+                    },
+                    "422": {
+                        "description": "Validasi gagal"
+                    }
+                }
+            }
+        },
+        "/api/campaigns": {
+            "get": {
+                "tags": [
+                    "Campaigns"
+                ],
+                "summary": "Ambil semua daftar campaign",
+                "operationId": "f63bfb37edf1acfd021c50961b734ec0",
+                "responses": {
+                    "200": {
+                        "description": "Daftar campaign berhasil diambil"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Campaigns"
+                ],
+                "summary": "Buat campaign baru",
+                "operationId": "272d9b28b56c8e18d5ef4c7440a05def",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "target_date"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Bantuan Bencana"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Penggalangan dana korban banjir"
+                                    },
+                                    "target_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2026-12-31"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "active"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Program donasi berhasil dibuat"
+                    },
+                    "422": {
+                        "description": "Validasi gagal"
+                    }
+                }
+            }
+        },
+        "/api/categories": {
+            "get": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Ambil semua kategori",
+                "description": "Display a listing of the resource.",
+                "operationId": "3f5817a34833d0a1f4af4548dd3aeaba",
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mengambil data kategori"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Categories"
+                ],
+                "summary": "Tambah kategori baru",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "71fcad552bb0eaba9fb191fd8d8dcab0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "category_name"
+                                ],
+                                "properties": {
+                                    "category_name": {
+                                        "type": "string",
+                                        "example": "Pakaian"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Category berhasil ditambahkan"
+                    },
+                    "422": {
+                        "description": "Validasi gagal"
+                    }
+                }
+            }
+        },
+        "/api/distributions": {
+            "get": {
+                "tags": [
+                    "Distributions"
+                ],
+                "summary": "Ambil semua data distribusi",
+                "description": "GET /api/distributions",
+                "operationId": "1c50a7e7560b6a28a8dc55c38f7ed1c1",
+                "responses": {
+                    "200": {
+                        "description": "Riwayat distribusi berhasil diambil"
+                    },
+                    "500": {
+                        "description": "Terjadi kesalahan server"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Distributions"
+                ],
+                "summary": "Mencatat log distribusi barang",
+                "description": "POST /api/distributions",
+                "operationId": "cf0677ca3a834ee6995836e6cc7118b4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "donation_id",
+                                    "beneficiary_id",
+                                    "distribution_date"
+                                ],
+                                "properties": {
+                                    "donation_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "beneficiary_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "distribution_date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2026-05-19"
+                                    },
+                                    "note": {
+                                        "type": "string",
+                                        "example": "Barang sudah diterima dengan baik"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Distribusi berhasil dicatat"
+                    },
+                    "422": {
+                        "description": "Validasi gagal"
+                    },
+                    "500": {
+                        "description": "Server error"
+                    }
+                }
+            }
+        },
+        "/api/donations": {
+            "get": {
+                "tags": [
+                    "Donations"
+                ],
+                "summary": "Ambil riwayat semua donasi",
+                "operationId": "efd463fc838a5d0b3edcc89ecc8374ac",
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mengambil data donasi"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Donations"
+                ],
+                "summary": "Membuat data donasi baru",
+                "operationId": "a83d56537f533c01a1daf0abefdec913",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "campaign_id",
+                                    "category_id",
+                                    "item_name",
+                                    "quantity"
+                                ],
+                                "properties": {
+                                    "campaign_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "item_name": {
+                                        "type": "string",
+                                        "example": "Beras 5kg"
+                                    },
+                                    "quantity": {
+                                        "type": "integer",
+                                        "example": 3
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Donasi berhasil dicatat"
+                    },
+                    "422": {
+                        "description": "Validasi gagal"
+                    },
+                    "401": {
+                        "description": "Unauthorized (butuh login)"
+                    }
+                }
+            }
+        },
         "/feedbacks": {
             "get": {
                 "tags": [
@@ -63,6 +462,24 @@
         }
     },
     "tags": [
+        {
+            "name": "Auth"
+        },
+        {
+            "name": "Beneficiaries"
+        },
+        {
+            "name": "Campaigns"
+        },
+        {
+            "name": "Categories"
+        },
+        {
+            "name": "Distributions"
+        },
+        {
+            "name": "Donations"
+        },
         {
             "name": "Feedbacks",
             "description": "Feedbacks"

@@ -4,12 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use OpenApi\Attributes as OA;
+
+#[OA\Tag(name: "Categories")]
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    // GET /api/categories - Menampilkan semua kategori (Read)
+    #[OA\Get(
+        path: "/api/categories",
+        tags: ["Categories"],
+        summary: "Ambil semua kategori",
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Berhasil mengambil data kategori"
+            )
+        ]
+    )]
     public function index()
     {
         $categories = Category::all();
@@ -27,6 +42,31 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    // POST /api/categories - Menambah kategori baru (Create)
+    #[OA\Post(
+        path: "/api/categories",
+        tags: ["Categories"],
+        summary: "Tambah kategori baru",
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ["category_name"],
+                properties: [
+                    new OA\Property(property: "category_name", type: "string", example: "Pakaian")
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(
+                response: 201,
+                description: "Category berhasil ditambahkan"
+            ),
+            new OA\Response(
+                response: 422,
+                description: "Validasi gagal"
+            )
+        ]
+    )]
     public function store(Request $request)
     {
         $request->validate([
