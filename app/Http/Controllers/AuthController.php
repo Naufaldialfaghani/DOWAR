@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use OpenApi\Attributes as OA;
 
+
+#[OA\Tag(name: "Auth")]
 class AuthController extends Controller
 {
     #[OA\Post(
