@@ -2,44 +2,114 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use Illuminate\Http\Request;
-use OpenApi\Attributes as OA;
 
 class CategoryController extends Controller
 {
-    #[OA\Get(
-        path: "/api/categories",
-        summary: "Lihat semua kategori donasi",
-        tags: ["Categories"],
-        responses: [
-            new OA\Response(response: 200, description: "Berhasil mengambil data kategori")
-        ]
-    )]
+    /**
+     * Display a listing of the resource.
+     */
     public function index()
     {
-        // Sesuaikan dengan model Category milik kelompokmu
-        return response()->json(['message' => 'List kategori berhasil diambil'], 200);
+        $categories = Category::all();
+        return response()->json($categories);
     }
 
-    #[OA\Post(
-        path: "/api/categories",
-        summary: "Buat kategori baru",
-        tags: ["Categories"],
-        requestBody: new OA\RequestBody(
-            required: true,
-            content: new OA\JsonContent(
-                properties: [
-                    new OA\Property(property: "name", type: "string", example: "Bencana Alam"),
-                    new OA\Property(property: "description", type: "string", example: "Kategori untuk korban bencana.")
-                ]
-            )
-        ),
-        responses: [
-            new OA\Response(response: 201, description: "Kategori Dibuat")
-        ]
-    )]
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        return response()->json(['message' => 'Kategori berhasil dibuat'], 201);
+        $request->validate([
+            'category_name' => 'required'
+        ]);
+
+        $category = Category::create([
+            'category_name' => $request->category_name
+        ]);
+
+        return response()->json([
+            'message' => 'Category berhasil ditambahkan',
+            'data' => $category
+        ], 201);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show($id)
+    {
+        $category = Category::find($id);
+
+        if (!$category) {
+            return response()->json([
+                'message' => 'Category tidak ditemukan'
+            ], 404);
+        }
+
+        return response()->json($category);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Category $category)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'category_name' => 'required'
+        ]);
+
+        $category = Category::find($id);
+
+        if (!$category) {
+            return response()->json([
+                'message' => 'Category tidak ditemukan'
+            ], 404);
+        }
+
+        $category->category_name = $request->category_name;
+        $category->save();
+
+        return response()->json([
+            'message' => 'Category berhasil diupdate',
+            'data' => $category
+        ]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
+    {
+        $category = Category::find($id);
+
+        if (!$category) {
+            return response()->json([
+                'message' => 'Category tidak ditemukan'
+            ], 404);
+        }
+
+        $category->delete();
+
+        return response()->json([
+            'message' => 'Category berhasil dihapus'
+        ]);
     }
 }
